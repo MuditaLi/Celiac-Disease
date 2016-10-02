@@ -1,0 +1,33 @@
+---
+title: "Data analysis proposal"
+author: "Mingxi & Annette"
+date: "October 1, 2016"
+output: html_document
+---
+
+
+```{r, echo = FALSE}
+rm(list = ls(all = T))
+.packages <- c("stringr", "car", "ggplot2", "pastecs", "SuppDists", "dplyr", "foreign")
+.inst <- .packages %in% installed.packages()
+if(length(.packages[!.inst]) > 0) install.packages(.packages[!.inst])
+invisible(lapply(.packages, library, character.only=TRUE))
+```
+
+Loading the data:
+```{r, echo = FALSE}
+dataframe.origin <- read.spss("CoDe GFD Report NH 8-1-2016.sav", to.data.frame = TRUE)
+dataframe <- dataframe.origin[, -c(12:50, 56:82, 88:289)]
+```
+
+1. Background Information
+
+```{r}
+background <- dataframe[, c(12:17, 21)]
+background[, 7] <- factor(background[, 7])  # factorize the education variable
+summary(background[, c(2, 3, 7)])
+par(mfrow = c(1, 3))
+boxplot(background[, 1] ~ background[, 2], main = "Age")
+boxplot(background[, 4] ~ background[, 2], main = "Diet length by year")
+boxplot(background[, 6] ~ background[, 2], main = "BMI")
+```
